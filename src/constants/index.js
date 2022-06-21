@@ -1,0 +1,1 @@
+export {LocalResources} from './LocalResources';
