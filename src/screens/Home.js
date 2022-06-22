@@ -6,6 +6,9 @@ import {
   TouchableOpacity,
   Image,
   FlatList,
+  TouchableWithoutFeedback,
+  Keyboard,
+  View,
 } from 'react-native';
 import {Colors, LocalResources, Priority} from '../constants';
 import {TodoItem} from '../components/Home';
@@ -51,7 +54,7 @@ export const Home = ({navigation}) => {
       addItem(
         {
           id: '',
-          title: 'Task name',
+          title: 'New task',
           priority: Priority.normal,
           dueTime: Date.now() + DEFAULT_DUE_TIME_IN_MILLI,
         },
@@ -94,24 +97,31 @@ export const Home = ({navigation}) => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>To-do list</Text>
-      <FlatList
-        data={items}
-        renderItem={renderItem}
-        keyExtractor={item => item.id}
-        showsVerticalScrollIndicator={false}
-      />
-      <TouchableOpacity
-        style={styles.addButtonWrapper}
-        onPress={() => addTodoItem()}>
-        <Text style={styles.addButtonTitle}>Tạo task mới</Text>
-        <Image
-          style={styles.addButtonIcon}
-          source={LocalResources.Icons.ic_add}
-        />
-      </TouchableOpacity>
-    </SafeAreaView>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <SafeAreaView style={styles.container}>
+        <Text style={styles.title}>To-do list</Text>
+        <View
+          style={styles.itemListWrapper}
+          onStartShouldSetResponder={() => true}>
+          <FlatList
+            data={items}
+            renderItem={renderItem}
+            keyExtractor={item => item.id}
+            showsVerticalScrollIndicator={false}
+            automaticallyAdjustKeyboardInsets={true}
+          />
+        </View>
+        <TouchableOpacity
+          style={styles.addButtonWrapper}
+          onPress={() => addTodoItem()}>
+          <Text style={styles.addButtonTitle}>Tạo task mới</Text>
+          <Image
+            style={styles.addButtonIcon}
+            source={LocalResources.Icons.ic_add}
+          />
+        </TouchableOpacity>
+      </SafeAreaView>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -148,5 +158,9 @@ const styles = StyleSheet.create({
     height: 12,
     resizeMode: 'contain',
     marginLeft: 10,
+  },
+  itemListWrapper: {
+    flex: 1,
+    marginTop: 10,
   },
 });

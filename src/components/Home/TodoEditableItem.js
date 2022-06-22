@@ -115,9 +115,7 @@ export const TodoEditableItem = props => {
 
       <PrioritySelectionModal
         isVisible={isPriorityModalVisible}
-        //setIsVisible={setIsPriorityModalVisible}
         selectedPriority={newPriority}
-        //setSelectedPriority={setNewPriority}
         onSelected={data => {
           setNewPriority(data);
           setIsPriorityModalVisible(false);
