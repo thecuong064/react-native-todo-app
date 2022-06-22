@@ -7,18 +7,41 @@ import {
   Image,
   TextInput,
 } from 'react-native';
+import DatePicker from 'react-native-date-picker';
 import {Colors, LocalResources, Priority} from '../../constants';
+import {PrioritySelectionModal} from '../../modals';
+import {DataParserUtils} from '../../utils';
 
 export const TodoEditableItem = props => {
-  const {item, setIsEditing} = props;
-  const {id, title, dueTime, priority, priorityText} = item;
+  const {item, setIsEditing, onSaveButtonPress, onRemoveButtonPress} = props;
+
+  const {id, title, dueTime, priority} = item;
   const [newTitle, setNewTitle] = useState(title);
+  const [newPriority, setNewPriority] = useState(priority);
   const [isTitleInputFocusing, setIsTitleInputFocusing] = useState(false);
+
+  const [dueDate, setDueDate] = useState(new Date(dueTime));
+  const [datePickerOpen, setDatePickerOpen] = useState(false);
+
+  const [isPriorityModalVisible, setIsPriorityModalVisible] = useState(false);
+
+  const save = () => {
+    setIsEditing(false);
+    item.title = newTitle;
+    item.dueTime = dueDate.getTime();
+    item.priority = newPriority;
+    onSaveButtonPress(item);
+  };
+
+  const remove = () => {
+    setIsEditing(false);
+    onRemoveButtonPress(item);
+  };
 
   return (
     <View style={styles.container}>
       <View style={styles.rowRemvoveWrapper}>
-        <TouchableOpacity style={styles.removeButtonWrapper}>
+        <TouchableOpacity style={styles.removeButtonWrapper} onPress={remove}>
           <Image
             style={styles.removeIcon}
             source={LocalResources.Icons.ic_remove}
@@ -42,23 +65,67 @@ export const TodoEditableItem = props => {
         }
       />
 
-      <View style={styles.rowWrapper}>
+      <TouchableOpacity
+        style={styles.rowWrapper}
+        onPress={() => setDatePickerOpen(true)}>
         <Text style={styles.rowTitle}>Thời hạn</Text>
-        <Text style={styles.rowValue}>{dueTime}</Text>
-      </View>
-      <View style={styles.separator} />
-
-      <View style={styles.rowWrapper}>
-        <Text style={styles.rowTitle}>Mức độ ưu tiên</Text>
-        <Text style={styles.rowValue}>{priorityText}</Text>
-      </View>
+        <Text style={styles.rowValue}>
+          {DataParserUtils.getDisplayedDate(dueDate)}
+        </Text>
+      </TouchableOpacity>
       <View style={styles.separator} />
 
       <TouchableOpacity
-        style={styles.doneButtonWrapper}
-        onPress={() => setIsEditing(false)}>
+        style={styles.rowWrapper}
+        onPress={() => setIsPriorityModalVisible(true)}>
+        <Text style={styles.rowTitle}>Mức độ ưu tiên</Text>
+        <Text
+          style={{
+            ...styles.rowValue,
+            color:
+              newPriority.value === Priority.high.value
+                ? Colors.green
+                : newPriority.value === Priority.normal.value
+                ? Colors.orange
+                : Colors.black,
+          }}>
+          {newPriority.displayedName}
+        </Text>
+      </TouchableOpacity>
+      <View style={styles.separator} />
+
+      <TouchableOpacity style={styles.doneButtonWrapper} onPress={() => save()}>
         <Text style={styles.doneText}>Xong</Text>
       </TouchableOpacity>
+
+      <DatePicker
+        modal
+        mode="date"
+        locale="vi-vn"
+        open={datePickerOpen}
+        date={dueDate}
+        onConfirm={date => {
+          setDatePickerOpen(false);
+          setDueDate(date);
+        }}
+        onCancel={() => {
+          setDatePickerOpen(false);
+        }}
+      />
+
+      <PrioritySelectionModal
+        isVisible={isPriorityModalVisible}
+        //setIsVisible={setIsPriorityModalVisible}
+        selectedPriority={newPriority}
+        //setSelectedPriority={setNewPriority}
+        onSelected={data => {
+          setNewPriority(data);
+          setIsPriorityModalVisible(false);
+        }}
+        onCancel={() => {
+          setIsPriorityModalVisible(false);
+        }}
+      />
     </View>
   );
 };

@@ -4,45 +4,22 @@ import {Colors, LocalResources, Priority} from '../../constants';
 import {TodoEditableItem} from './TodoEditableItem';
 import {TodoDefaultItem} from './TodoDefaultItem';
 
-export const TodoItem = ({item}) => {
+export const TodoItem = props => {
+  const {item, saveAction, removeAction} = props;
   const [isEditing, setIsEditing] = useState(false);
-  const {id, title, priority, priorityText, remainingDays} = item;
   return (
     <>
       {isEditing ? (
-        <TodoEditableItem item={item} setIsEditing={setIsEditing} />
+        <TodoEditableItem
+          item={item}
+          setIsEditing={setIsEditing}
+          onSaveButtonPress={saveAction}
+          onRemoveButtonPress={removeAction}
+        />
       ) : (
         <TodoDefaultItem item={item} setIsEditing={setIsEditing} />
       )}
     </>
-    // <View style={styles.container}>
-    //   <View style={styles.headerWrapper}>
-    //     <TouchableOpacity style={styles.actionButton} onPress={null} />
-    //     <Text style={styles.title}>{title}</Text>
-    //     <TouchableOpacity style={styles.editButton}>
-    //       <Image
-    //         style={styles.editIcon}
-    //         source={LocalResources.Icons.ic_edit}
-    //       />
-    //     </TouchableOpacity>
-    //   </View>
-
-    //   <View style={styles.infoWrapper}>
-    //     <Text
-    //       style={{
-    //         ...styles.priorityText,
-    //         color:
-    //           priority === Priority.high
-    //             ? Colors.green
-    //             : priority === Priority.normal
-    //             ? Colors.orange
-    //             : Colors.black,
-    //       }}>
-    //       Ưu tiên {priorityText.toLowerCase()}
-    //     </Text>
-    //     <Text style={styles.dueTimeText}>Còn {remainingDays} ngày</Text>
-    //   </View>
-    // </View>
   );
 };
 

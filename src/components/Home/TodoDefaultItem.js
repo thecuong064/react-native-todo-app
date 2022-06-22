@@ -4,7 +4,7 @@ import {Colors, LocalResources, Priority} from '../../constants';
 
 export const TodoDefaultItem = props => {
   const {item, setIsEditing} = props;
-  const {id, title, priority, priorityText, remainingDays} = item;
+  const {id, title, priority, remainingDays} = item;
 
   return (
     <View style={styles.container}>
@@ -26,15 +26,21 @@ export const TodoDefaultItem = props => {
           style={{
             ...styles.priorityText,
             color:
-              priority === Priority.high
+              priority.value === Priority.high.value
                 ? Colors.green
-                : priority === Priority.normal
+                : priority.value === Priority.normal.value
                 ? Colors.orange
                 : Colors.black,
           }}>
-          Ưu tiên {priorityText.toLowerCase()}
+          Ưu tiên {priority.displayedName.toLowerCase()}
         </Text>
-        <Text style={styles.dueTimeText}>Còn {remainingDays} ngày</Text>
+        {remainingDays >= 0 ? (
+          <Text style={styles.dueTimeText}>Còn {remainingDays} ngày</Text>
+        ) : (
+          <Text style={styles.dueTimeExpiredText}>
+            Đã quá hạn {Math.abs(remainingDays)} ngày
+          </Text>
+        )}
       </View>
     </View>
   );
@@ -88,5 +94,10 @@ const styles = StyleSheet.create({
     fontSize: 10,
     fontWeight: '400',
     color: Colors.black,
+  },
+  dueTimeExpiredText: {
+    fontSize: 10,
+    fontWeight: '400',
+    color: Colors.red,
   },
 });
