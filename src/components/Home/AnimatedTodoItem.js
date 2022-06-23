@@ -40,31 +40,36 @@ export const AnimatedTodoItem = props => {
 
   const [isPriorityModalVisible, setIsPriorityModalVisible] = useState(false);
 
-  const toggleAnimation = () => {
-    LayoutAnimation.configureNext({
-      duration: 300,
-      create: {
-        type: LayoutAnimation.Types.easeInEaseOut,
-        property: LayoutAnimation.Properties.opacity,
+  const toggleAnimation = callback => {
+    LayoutAnimation.configureNext(
+      {
+        duration: 300,
+        create: {
+          type: LayoutAnimation.Types.easeInEaseOut,
+          property: LayoutAnimation.Properties.opacity,
+        },
+        update: {
+          type: LayoutAnimation.Types.easeInEaseOut,
+        },
       },
-      update: {
-        type: LayoutAnimation.Types.easeInEaseOut,
-      },
-    });
+      callback,
+      callback,
+    );
   };
 
   const edit = () => {
-    toggleAnimation();
+    toggleAnimation(() => {});
     setIsEditing(true);
   };
 
   const save = () => {
-    toggleAnimation();
+    toggleAnimation(() => {
+      item.title = newTitle;
+      item.dueTime = dueDate.getTime();
+      item.priority = newPriority;
+      onSaveButtonPress(item);
+    });
     setIsEditing(false);
-    item.title = newTitle;
-    item.dueTime = dueDate.getTime();
-    item.priority = newPriority;
-    onSaveButtonPress(item);
   };
 
   const remove = () => {
