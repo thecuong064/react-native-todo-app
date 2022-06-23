@@ -1,6 +1,4 @@
 import React, {useState} from 'react';
-import {StyleSheet} from 'react-native';
-import {Colors} from '../../constants';
 import {TodoEditableItem} from './TodoEditableItem';
 import {TodoDefaultItem} from './TodoDefaultItem';
 

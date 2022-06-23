@@ -23,6 +23,9 @@ export function* getItemListAsync(props) {
     let items = DataParserUtils.parseDisplayedData(response);
 
     items.sort((a, b) => {
+      if (a.priority?.order === b.priority?.order) {
+        return a.dueTime - b.dueTime;
+      }
       return a.priority.order - b.priority.order;
     });
     yield put(getItemListSuccess(items));
