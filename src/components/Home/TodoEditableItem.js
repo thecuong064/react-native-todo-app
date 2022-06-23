@@ -161,7 +161,6 @@ const styles = StyleSheet.create({
     width: 14,
     height: 16,
     resizeMode: 'contain',
-    alignSelf: 'flex-end',
   },
   removeText: {
     fontSize: 12,

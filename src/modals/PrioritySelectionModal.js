@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
 import Modal from 'react-native-modal';
 import {Colors, Priority} from '../constants';
@@ -70,10 +70,6 @@ const Option = props => {
 };
 
 const styles = StyleSheet.create({
-  divider: {
-    height: 1,
-    backgroundColor: '#eaeaea',
-  },
   modalWrapper: {
     backgroundColor: Colors.white,
     borderRadius: 12,

@@ -11,9 +11,15 @@ import {
   View,
   KeyboardAvoidingView,
   Platform,
+  RefreshControl,
 } from 'react-native';
 
-import {Colors, KeyboardEvents, LocalResources, Priority} from '../constants';
+import {
+  Colors,
+  DEFAULT_ITEM,
+  KeyboardEvents,
+  LocalResources,
+} from '../constants';
 import {TodoItem} from '../components/Home';
 import {useSelector} from 'react-redux';
 import store from '../redux/configureStore';
@@ -24,21 +30,11 @@ import {
   editItem,
 } from '../redux/actions/itemActions';
 
-const DEFAULT_REMAINING_DAYS = 7;
-const DEFAULT_DUE_TIME_IN_MILLI = 1000 * 60 * 60 * 24 * DEFAULT_REMAINING_DAYS;
-
 export const Home = ({navigation}) => {
   const items = useSelector(state => state.item.data);
 
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const [isKeyboardShown, setIsKeyboardShown] = useState(false);
-
-  const renderItem = ({item}) => (
-    <TodoItem
-      item={item}
-      saveAction={editTodoItem}
-      removeAction={removeTodoItem}
-    />
-  );
 
   const keyboardShownListener = () => {
     setIsKeyboardShown(true);
@@ -73,11 +69,15 @@ export const Home = ({navigation}) => {
     loadItems();
   }, []);
 
-  const loadItems = () => {
+  const loadItems = (showRefreshing = false) => {
+    setIsRefreshing(showRefreshing);
     store.dispatch(
       getItemList(
-        data => {},
+        data => {
+          setIsRefreshing(false);
+        },
         error => {
+          setIsRefreshing(false);
           console.log(error);
         },
       ),
@@ -87,12 +87,7 @@ export const Home = ({navigation}) => {
   const addTodoItem = () => {
     store.dispatch(
       addItem(
-        {
-          id: '',
-          title: 'New task',
-          priority: Priority.normal,
-          dueTime: Date.now() + DEFAULT_DUE_TIME_IN_MILLI,
-        },
+        DEFAULT_ITEM,
         () => {
           loadItems();
         },
@@ -131,6 +126,14 @@ export const Home = ({navigation}) => {
     );
   };
 
+  const renderItem = ({item}) => (
+    <TodoItem
+      item={item}
+      saveAction={editTodoItem}
+      removeAction={removeTodoItem}
+    />
+  );
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -151,6 +154,12 @@ export const Home = ({navigation}) => {
               showsVerticalScrollIndicator={false}
               removeClippedSubviews={false}
               contentContainerStyle={styles.itemList}
+              refreshControl={
+                <RefreshControl
+                  onRefresh={() => loadItems(true)}
+                  refreshing={isRefreshing}
+                />
+              }
             />
             {!isKeyboardShown && (
               <TouchableOpacity
