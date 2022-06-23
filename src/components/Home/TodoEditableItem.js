@@ -34,7 +34,6 @@ export const TodoEditableItem = props => {
   };
 
   const remove = () => {
-    setIsEditing(false);
     onRemoveButtonPress(item);
   };
 
