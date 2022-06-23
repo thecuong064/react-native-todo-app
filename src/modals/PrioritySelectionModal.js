@@ -1,6 +1,7 @@
 import React from 'react';
-import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import Modal from 'react-native-modal';
+import {AppText} from '../components/general';
 import {Colors, Priority} from '../constants';
 
 const Options = [
@@ -52,7 +53,7 @@ const Option = props => {
             : styles.optionWrapper
         }
         onPress={onPress}>
-        <Text
+        <AppText
           style={{
             ...styles.title,
             color:
@@ -63,7 +64,7 @@ const Option = props => {
                 : Colors.black,
           }}>
           {priority?.displayedName}
-        </Text>
+        </AppText>
       </TouchableOpacity>
     </React.Fragment>
   );

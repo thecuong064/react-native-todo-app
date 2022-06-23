@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import {
   View,
-  Text,
   StyleSheet,
   TouchableOpacity,
   Image,
@@ -11,6 +10,7 @@ import DatePicker from 'react-native-date-picker';
 import {Colors, LocalResources, Priority} from '../../constants';
 import {PrioritySelectionModal} from '../../modals';
 import {DataParserUtils} from '../../utils';
+import {AppText, AppTextInput} from '../general';
 
 export const TodoEditableItem = props => {
   const {item, setIsEditing, onSaveButtonPress, onRemoveButtonPress} = props;
@@ -46,12 +46,12 @@ export const TodoEditableItem = props => {
             style={styles.removeIcon}
             source={LocalResources.Icons.ic_remove}
           />
-          <Text style={styles.removeText}>Xoá</Text>
+          <AppText style={styles.removeText}>Xoá</AppText>
         </TouchableOpacity>
       </View>
 
       <View style={styles.rowWrapper}>
-        <TextInput
+        <AppTextInput
           value={newTitle}
           style={styles.titleInput}
           onChangeText={text => setNewTitle(text)}
@@ -68,18 +68,18 @@ export const TodoEditableItem = props => {
       <TouchableOpacity
         style={styles.rowWrapper}
         onPress={() => setDatePickerOpen(true)}>
-        <Text style={styles.rowTitle}>Thời hạn</Text>
-        <Text style={styles.rowValue}>
+        <AppText style={styles.rowTitle}>Thời hạn</AppText>
+        <AppText style={styles.rowValue}>
           {DataParserUtils.getDisplayedDate(dueDate)}
-        </Text>
+        </AppText>
       </TouchableOpacity>
       <View style={styles.separator} />
 
       <TouchableOpacity
         style={styles.rowWrapper}
         onPress={() => setIsPriorityModalVisible(true)}>
-        <Text style={styles.rowTitle}>Mức độ ưu tiên</Text>
-        <Text
+        <AppText style={styles.rowTitle}>Mức độ ưu tiên</AppText>
+        <AppText
           style={{
             ...styles.rowValue,
             color:
@@ -90,12 +90,12 @@ export const TodoEditableItem = props => {
                 : Colors.black,
           }}>
           {newPriority.displayedName}
-        </Text>
+        </AppText>
       </TouchableOpacity>
       <View style={styles.separator} />
 
       <TouchableOpacity style={styles.doneButtonWrapper} onPress={() => save()}>
-        <Text style={styles.doneText}>Xong</Text>
+        <AppText style={styles.doneText}>Xong</AppText>
       </TouchableOpacity>
 
       <DatePicker

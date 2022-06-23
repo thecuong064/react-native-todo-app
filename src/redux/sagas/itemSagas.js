@@ -13,8 +13,6 @@ import {
 import {ItemActionTypes} from '../reducers/itemReducer';
 import uuid from 'react-native-uuid';
 
-const delay = ms => new Promise(res => setTimeout(res, ms));
-
 export function* getItemListAsync(props) {
   const {onSuccess, onFailed} = props;
   try {

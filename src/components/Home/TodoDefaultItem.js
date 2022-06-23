@@ -1,6 +1,7 @@
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import {View, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import {Colors, LocalResources, Priority} from '../../constants';
+import {AppText} from '../../components/general';
 
 export const TodoDefaultItem = props => {
   const {item, setIsEditing} = props;
@@ -10,7 +11,7 @@ export const TodoDefaultItem = props => {
     <View style={styles.container}>
       <View style={styles.headerWrapper}>
         <TouchableOpacity style={styles.actionButton} onPress={null} />
-        <Text style={styles.title}>{title}</Text>
+        <AppText style={styles.title}>{title}</AppText>
         <TouchableOpacity
           style={styles.editButton}
           onPress={() => setIsEditing(true)}>
@@ -22,7 +23,7 @@ export const TodoDefaultItem = props => {
       </View>
 
       <View style={styles.infoWrapper}>
-        <Text
+        <AppText
           style={{
             ...styles.priorityText,
             color:
@@ -33,13 +34,13 @@ export const TodoDefaultItem = props => {
                 : Colors.black,
           }}>
           Ưu tiên {priority.displayedName.toLowerCase()}
-        </Text>
+        </AppText>
         {remainingDays >= 0 ? (
-          <Text style={styles.dueTimeText}>Còn {remainingDays} ngày</Text>
+          <AppText style={styles.dueTimeText}>Còn {remainingDays} ngày</AppText>
         ) : (
-          <Text style={styles.dueTimeExpiredText}>
+          <AppText style={styles.dueTimeExpiredText}>
             Đã quá hạn {Math.abs(remainingDays)} ngày
-          </Text>
+          </AppText>
         )}
       </View>
     </View>

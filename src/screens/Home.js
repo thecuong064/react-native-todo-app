@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
-  Text,
   TouchableOpacity,
   Image,
   FlatList,
@@ -13,6 +12,7 @@ import {
   Platform,
   RefreshControl,
 } from 'react-native';
+import {AppText} from '../components/general';
 
 import {
   Colors,
@@ -143,7 +143,7 @@ export const Home = ({navigation}) => {
         onPress={Keyboard.dismiss}
         accessible={false}>
         <SafeAreaView style={styles.container}>
-          <Text style={styles.title}>To-do list</Text>
+          <AppText style={styles.title}>To-do list</AppText>
           <View
             style={styles.itemListWrapper}
             onStartShouldSetResponder={() => true}>
@@ -165,7 +165,7 @@ export const Home = ({navigation}) => {
               <TouchableOpacity
                 style={{...styles.addButtonWrapper}}
                 onPress={() => addTodoItem()}>
-                <Text style={styles.addButtonTitle}>Tạo task mới</Text>
+                <AppText style={styles.addButtonTitle}>Tạo task mới</AppText>
                 <Image
                   style={styles.addButtonIcon}
                   source={LocalResources.Icons.ic_add}
