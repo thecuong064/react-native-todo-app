@@ -64,6 +64,7 @@ export const AnimatedTodoItem = props => {
 
   const save = () => {
     toggleAnimation(() => {
+      setNewTitle(newTitle?.trim());
       item.title = newTitle;
       item.dueTime = dueDate.getTime();
       item.priority = newPriority;
@@ -100,6 +101,7 @@ export const AnimatedTodoItem = props => {
           onFocus={() => setIsTitleInputFocusing(true)}
           onBlur={() => setIsTitleInputFocusing(false)}
           editable={isEditing}
+          selection={{start: isEditing ? newTitle?.length : 0}}
         />
         {!isEditing && (
           <TouchableOpacity style={styles.editButton} onPress={edit}>
