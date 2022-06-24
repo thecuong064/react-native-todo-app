@@ -66,7 +66,7 @@ export const Home = ({navigation}) => {
   }, []);
 
   useEffect(() => {
-    loadItems();
+    loadItems(true);
   }, []);
 
   const loadItems = (showRefreshing = false) => {
@@ -134,6 +134,10 @@ export const Home = ({navigation}) => {
     />
   );
 
+  const noTaskIndicator = () => (
+    <AppText style={styles.noTaskIndicatorText}>Đã hết task</AppText>
+  );
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -160,19 +164,20 @@ export const Home = ({navigation}) => {
                   refreshing={isRefreshing}
                 />
               }
+              ListEmptyComponent={noTaskIndicator}
             />
-            {!isKeyboardShown && (
-              <TouchableOpacity
-                style={{...styles.addButtonWrapper}}
-                onPress={() => addTodoItem()}>
-                <AppText style={styles.addButtonTitle}>Tạo task mới</AppText>
-                <Image
-                  style={styles.addButtonIcon}
-                  source={LocalResources.Icons.ic_add}
-                />
-              </TouchableOpacity>
-            )}
           </View>
+          {!isKeyboardShown && (
+            <TouchableOpacity
+              style={{...styles.addButtonWrapper}}
+              onPress={() => addTodoItem()}>
+              <AppText style={styles.addButtonTitle}>Tạo task mới</AppText>
+              <Image
+                style={styles.addButtonIcon}
+                source={LocalResources.Icons.ic_add}
+              />
+            </TouchableOpacity>
+          )}
         </SafeAreaView>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
@@ -222,5 +227,14 @@ const styles = StyleSheet.create({
   },
   itemList: {
     paddingHorizontal: 24,
+    flexGrow: 1,
+  },
+  noTaskIndicatorText: {
+    fontSize: 20,
+    fontWeight: '500',
+    color: Colors.black,
+    textAlignVertical: 'center',
+    textAlign: 'center',
+    height: '100%',
   },
 });
